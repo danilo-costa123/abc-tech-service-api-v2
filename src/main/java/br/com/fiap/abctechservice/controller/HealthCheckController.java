@@ -24,7 +24,6 @@ public class HealthCheckController {
 	@GetMapping("version")
 	public ResponseEntity<String> version() {
 		MavenXpp3Reader reader = new MavenXpp3Reader();
-		
 		Model model = new Model();
 		try {
 			model = reader.read(new FileReader("pom.xml"));
