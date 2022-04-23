@@ -22,9 +22,19 @@ public class HealthCheckController {
 	}
 
 	@GetMapping("version")
-	public ResponseEntity<String> version() throws FileNotFoundException, IOException, XmlPullParserException {
+	public ResponseEntity<String> version() {
 		MavenXpp3Reader reader = new MavenXpp3Reader();
-		Model model = reader.read(new FileReader("pom.xml"));
+		
+		Model model = new Model();
+		try {
+			model = reader.read(new FileReader("pom.xml"));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (XmlPullParserException e) {
+			e.printStackTrace();
+		}
 		return ResponseEntity.ok(model.getName() + " - " + model.getVersion());
 	}
 
