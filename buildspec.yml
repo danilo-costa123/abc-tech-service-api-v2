@@ -5,6 +5,8 @@ phases:
       - echo "Meu pre build da aplicação"
   build:
     commands:
+      - echo "Testing"
+      - mvn clean test
       - echo "Building"
       - mvn clean compile package
   post_build:
