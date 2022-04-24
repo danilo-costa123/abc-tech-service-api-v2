@@ -16,37 +16,38 @@ import java.util.List;
 @Service
 public class OrderServiceImpl implements OrderService {
 
-    private OrderRepository orderRepository;
-    private AssistanceRepository assistanceRepository;
+	private OrderRepository orderRepository;
+	private AssistanceRepository assistanceRepository;
 
-    public OrderServiceImpl (@Autowired OrderRepository orderRepository,
-                             @Autowired AssistanceRepository assistanceRepository) {
-        this.orderRepository = orderRepository;
-        this.assistanceRepository = assistanceRepository;
-    }
+	public OrderServiceImpl(@Autowired OrderRepository orderRepository,
+			@Autowired AssistanceRepository assistanceRepository) {
+		this.orderRepository = orderRepository;
+		this.assistanceRepository = assistanceRepository;
+	}
 
-    @Override
-    public void saveOrder(Order order, List<Long> arrayAssists)  {
-        ArrayList<Assistance> assistances = new ArrayList<>();
+	@Override
+	public void saveOrder(Order order, List<Long> arrayAssists) {
+		ArrayList<Assistance> assistances = new ArrayList<>();
 
-        arrayAssists.forEach( i ->{
-            Assistance assistance = this.assistanceRepository.findById(i).orElseThrow();
-            assistances.add(assistance);
-        });
+		arrayAssists.forEach(i -> {
+			Assistance assistance = this.assistanceRepository.findById(i).orElseThrow();
+			assistances.add(assistance);
+		});
 
-        order.setServices(assistances);
+		order.setServices(assistances);
 
-        if (!order.hasMinAssists()){
-            throw new MinimumAssistsRequiredException("Array de assistências inváldio", "Por favor, envie ao menos 1 assistência" );
-        } else if (order.exceedsMaxAssists()){
-            throw new MaxAssistsException("Array de assistências inváldio", "O número máximo de assistências é 15");
-        }
+		if (!order.hasMinAssists()) {
+			throw new MinimumAssistsRequiredException("Array de assistências inváldio",
+					"Por favor, envie ao menos 1 assistência");
+		} else if (order.exceedsMaxAssists()) {
+			throw new MaxAssistsException("Array de assistências inváldio", "O número máximo de assistências é 15");
+		}
 
-        orderRepository.save(order);
-    }
+		orderRepository.save(order);
+	}
 
-    @Override
-    public List<Order> listOrdersByOperator(Long operatorId) {
-        return null;
-    }
+	@Override
+	public List<Order> listOrdersByOperator(Long operatorId) {
+		return null;
+	}
 }
